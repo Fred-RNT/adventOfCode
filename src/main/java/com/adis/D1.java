@@ -5,7 +5,6 @@ import java.net.URISyntaxException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Objects;
@@ -18,7 +17,7 @@ public class D1 {
             Pair pair = parseInputFile("/d1.input");
 
             var result = 0l;
-            result= similarite(0, pair.gauche(), pair.droite()) ;
+            result = similarite(0, pair.gauche(), pair.droite());
 
 
             Set<Integer> gauche = new HashSet<>(pair.gauche());
@@ -39,10 +38,12 @@ public class D1 {
 
         long result = 0;
 
-        for(int i = debut; i < gauche.size(); i++) {
+        for (int i = debut; i < gauche.size(); i++) {
             var nombre = gauche.get(i);
-            var facteur = droite.stream().filter(n -> Objects.equals(n, nombre)).count();
-            result+=nombre*facteur;
+            var facteur = droite.stream()
+                                .filter(n -> Objects.equals(n, nombre))
+                                .count();
+            result += nombre * facteur;
         }
         return result;
     }
