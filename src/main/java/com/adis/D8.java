@@ -8,16 +8,13 @@ import java.util.List;
 
 public class D8 {
     public static char[][] parseInputFile() throws IOException, URISyntaxException {
-        List<String> lines = Files.readAllLines(Paths.get(D3.class.getResource("/d8.input")
-                                                                  .toURI()));
+        List<String> lines = Files.readAllLines(Paths.get(D3.class.getResource("/d8.input").toURI()));
         int numRows = lines.size();
-        int numCols = lines.get(0)
-                           .length();
+        int numCols = lines.get(0).length();
         char[][] matrix = new char[numRows][numCols];
 
         for (int row = 0; row < numRows; row++) {
-            matrix[row] = lines.get(row)
-                               .toCharArray();
+            matrix[row] = lines.get(row).toCharArray();
         }
         return matrix;
     }
@@ -63,8 +60,8 @@ public class D8 {
                         factor++;
                     }
                     factor = 0;
-                    while (i - factor *deltaI >= 0 && j - factor *deltaJ >= 0 && i - factor *deltaI < matrix.length && j - factor *deltaJ < matrix[0].length) {
-                        antinodes[i - factor *deltaI][j - factor *deltaJ] = 'A';
+                    while (i - factor * deltaI >= 0 && j - factor * deltaJ >= 0 && i - factor * deltaI < matrix.length && j - factor * deltaJ < matrix[0].length) {
+                        antinodes[i - factor * deltaI][j - factor * deltaJ] = 'A';
                         factor++;
                     }
                 }
