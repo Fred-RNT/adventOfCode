@@ -37,13 +37,13 @@ public class D12 {
         int result = 0;
         for (Aire aire : aires) {
             System.out.println("Aire : " + aire.valeur + " aire : " + aire.aire() + " nombre de cote : " + aire.nombreCote());
-            result += aire.nombreCote() * aire.aire();
+            result += aire.aire() * aire.nombreCote();
         }
-        System.out.println("resultat : " + result);
+        System.out.println("resultat : " +result);
     }
 
     char[][] parseInputFile() throws IOException, URISyntaxException {
-        List<String> lines = Files.readAllLines(Paths.get(getClass().getResource("/test.input").toURI()));
+        List<String> lines = Files.readAllLines(Paths.get(getClass().getResource("/d12.input").toURI()));
         int numRows = lines.size();
         int numCols = lines.getFirst().length();
         char[][] matrix = new char[numRows][numCols];
@@ -124,19 +124,19 @@ public class D12 {
 
     static record Element(int x, int y, char value) {
         public Element gauche() {
-            return new Element(x - 1, y, value);
+            return new Element(x, y-1, value);
         }
 
         public Element droite() {
-            return new Element(x + 1, y, value);
+            return new Element(x, y+1, value);
         }
 
         public Element haut() {
-            return new Element(x, y - 1, value);
+            return new Element(x-1, y, value);
         }
 
         public Element bas() {
-            return new Element(x, y + 1, value);
+            return new Element(x+1, y, value);
         }
     }
 
@@ -176,9 +176,9 @@ public class D12 {
 
             Function<Element, Element>[] mouvements = new Function[4];
             mouvements[0] = Element::haut;
-            mouvements[1] = Element::gauche;
+            mouvements[1] = Element::droite;
             mouvements[2] = Element::bas;
-            mouvements[3] = Element::droite;
+            mouvements[3] = Element::gauche;
 
             int nbRotation = 0;
             final var bordsDroits = elements.stream()
@@ -192,7 +192,7 @@ public class D12 {
 
                 Element current = debut;
                 do {
-                    int maDroite = Math.floorMod(direction - 1, 4);
+                    int maDroite = Math.floorMod(direction + 1, 4);
                     //si je n'ai pas de mur à ma droite, je tourne à droite et j'avance
                     if (elements.contains(mouvements[maDroite].apply(current))) {
                         nbRotation++;
@@ -203,14 +203,14 @@ public class D12 {
                         //je ne peux pas avancer je tourne à gauche
                         if (!elements.contains(mouvements[direction].apply(current))) {
                             nbRotation++;
-                            direction = Math.floorMod(direction + 1, 4);
+                            direction = Math.floorMod(direction -1 , 4);
                         } else {
                             //j'avance
                             current = mouvements[direction].apply(current);
                         }
                     }
                     //si j'ai un bord droit je le retire de la liste
-                    if (!elements.contains(current.droite())) {
+                    if(bordsDroits.contains(current) && direction == 0){
                         bordsDroits.remove(current);
                     }
                 } while (!current.equals(debut) || direction != 0);
